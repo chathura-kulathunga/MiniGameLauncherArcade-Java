@@ -77,23 +77,31 @@ public class GameLauncherUI extends JFrame {
                 button.setBackground(new Color(33, 150, 243));
             }
         });
+        
+// === Click action ===
+button.addActionListener(e -> {
+    launcherFrame.setEnabled(false); // Disable launcher
+    JFrame gameWindow = null;
 
-        // === Click action ===
-        button.addActionListener(e -> {
-            launcherFrame.setEnabled(false); // Disable launcher
-            if (text.equals("Puzzle Slider")) {
-                JFrame gameWindow = new gamelauncher.games.puzzle.PuzzleSlider();
-                gameWindow.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosed(java.awt.event.WindowEvent e) {
-                        launcherFrame.setEnabled(true); // Re-enable launcher when game closed
-                        launcherFrame.toFront(); // Bring back to front
-                    }
-                });
-            } else {
-                JOptionPane.showMessageDialog(null, text + " clicked! (Game not yet implemented)");
-                launcherFrame.setEnabled(true); // Re-enable immediately for message
+    if (text.equals("Puzzle Slider")) {
+        gameWindow = new gamelauncher.games.puzzle.PuzzleSlider();
+    } else if (text.equals("Racing Game")) {
+        gameWindow = new gamelauncher.games.racing.RacingGame();
+    } else {
+        JOptionPane.showMessageDialog(null, text + " clicked! (Game not yet implemented)");
+        launcherFrame.setEnabled(true); // Re-enable immediately
+    }
+
+    if (gameWindow != null) {
+        gameWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                launcherFrame.setEnabled(true);
+                launcherFrame.toFront();
             }
         });
+    }
+});
+        
 
         return button;
     }
